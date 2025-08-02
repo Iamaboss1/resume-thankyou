@@ -62,17 +62,24 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const encodedResume = params.get("resume");
+    const binId = params.get("id");
 
-    if (encodedResume) {
-      try {
-        const decodedResume = decodeURIComponent(encodedResume);
-        document.getElementById("resume-box").innerText = decodedResume;
-      } catch (e) {
-        document.getElementById("resume-box").innerText = "⚠️ Error decoding resume.";
-      }
+    if (binId) {
+      fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+        headers: {
+          "X-Master-Key": "$2a$10$A16eNPPEndylMmS8IMt28u3BQ96VlERdK/zPLm7LpbP3XFfT2y/2K" // Replace this!
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const resume = data.record.resume;
+          document.getElementById("resume-box").textContent = resume;
+        })
+        .catch(() => {
+          document.getElementById("resume-box").textContent = "⚠️ Failed to fetch resume.";
+        });
     } else {
-      document.getElementById("resume-box").innerText = "❌ No resume found in the URL.";
+      document.getElementById("resume-box").textContent = "❌ No resume ID found in the URL.";
     }
   </script>
 </body>
