@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Preview</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d1117;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .box {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      animation: slideIn 1s ease forwards;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .box:hover {
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+      transform: scale(1.01);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .box {
+        font-size: 15px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="resume-box" class="box">Loading your resume...</div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const encodedResume = params.get("resume");
+
+    if (encodedResume) {
+      try {
+        const decodedResume = decodeURIComponent(encodedResume);
+        document.getElementById("resume-box").innerText = decodedResume;
+      } catch (e) {
+        document.getElementById("resume-box").innerText = "⚠️ Error decoding resume.";
+      }
+    } else {
+      document.getElementById("resume-box").innerText = "❌ No resume found in the URL.";
+    }
+  </script>
+</body>
+</html>
